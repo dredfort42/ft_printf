@@ -1,11 +1,11 @@
 #include "ft_printf.h"
 
-static char	*ft_processing_g_f(long double f, t_data *data, short *precision,
-							short e)
+static char *ft_processing_g_f(long double f, t_data *data, short *precision,
+							   short e)
 {
-	char	*rtn;
-	short	pa;
-	short	din;
+	char *rtn;
+	short pa;
+	short din;
 
 	data->precision = *precision - (e + 1);
 	if (*precision == 6 && f)
@@ -23,11 +23,11 @@ static char	*ft_processing_g_f(long double f, t_data *data, short *precision,
 	return (rtn);
 }
 
-static char	*ft_processing_g(long double f, t_data *data)
+static char *ft_processing_g(long double f, t_data *data)
 {
-	short	precision;
-	short	e;
-	char	*rtn;
+	short precision;
+	short e;
+	char *rtn;
 
 	precision = data->precision;
 	if (!precision)
@@ -48,16 +48,16 @@ static char	*ft_processing_g(long double f, t_data *data)
 	return (rtn);
 }
 
-static char	*ft_g_status(va_list arg, t_data *data)
+static char *ft_g_status(va_list arg, t_data *data)
 {
-	va_list		copy;
-	long double	f;
-	long double	tmp_f;
-	short		minus;
+	va_list copy;
+	long double f;
+	long double tmp_f;
+	short minus;
 
 	va_copy(copy, arg);
 	if (ft_is_nan(copy))
-		return (ft_nan(data));
+		return (ft_nan_str(data));
 	f = va_arg(arg, double);
 	tmp_f = f;
 	minus = 0;
@@ -67,11 +67,11 @@ static char	*ft_g_status(va_list arg, t_data *data)
 		tmp_f = -tmp_f;
 	}
 	if (tmp_f > 9223372036854775808.0)
-		return (ft_inf(minus, data));
+		return (ft_inf_str(minus, data));
 	return (ft_processing_g(f, data));
 }
 
-void	ft_conversion_g(va_list arg, const char *format, t_data *data)
+void ft_conversion_g(va_list arg, const char *format, t_data *data)
 {
 	if (format[data->index] == 'g')
 		ft_magic_fe(ft_g_status(arg, data), data);

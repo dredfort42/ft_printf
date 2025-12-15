@@ -1,46 +1,59 @@
 #include "ft_printf.h"
 
-char	*ft_memory_p(int size, t_data *data)
+/**
+ * @brief Allocates memory for a string of given size.
+ *
+ * @param size The size of memory to allocate.
+ * @param data Pointer to a t_data structure that holds parsing state and flags.
+ * @return A pointer to the allocated memory, or NULL if allocation fails.
+ */
+char *ft_memory_p(int size, t_data *data)
 {
-	char	*rtn;
+	char *rtn;
 
-	rtn = malloc(sizeof(char) * size);
+	rtn = (char *)malloc(sizeof(char) * size);
 	if (!rtn)
 	{
 		data->error = 1;
-		return (0);
+		return (NULL);
 	}
 	return (rtn);
 }
 
-short	ft_is_conversion(char chr)
+/**
+ * @brief Checks if the given character is a conversion specifier.
+ *
+ * @param chr The character to check.
+ * @return Returns TRUE if the character is a conversion specifier, otherwise FALSE.
+й */
+short ft_is_conversion(char chr)
 {
-	short	i;
-	char	*conversions;
+	short i;
+	char *conversions;
 
 	i = 0;
 	conversions = "%cspdiuxXnfge\0";
 	while (conversions[i])
 	{
 		if (chr == conversions[i])
-			return (1);
+			return (TRUE);
 		i++;
 	}
-	return (0);
+	return (FALSE);
 }
 
-short	ft_is_flag(char chr)
+short ft_is_flag(char chr)
 {
-	short	i;
-	char	*flags;
+	short i;
+	char *flags;
 
 	i = 0;
 	flags = "' -+#0\0";
 	while (flags[i])
 	{
 		if (chr == flags[i])
-			return (1);
+			return (TRUE);
 		i++;
 	}
-	return (0);
+	return (FALSE);
 }

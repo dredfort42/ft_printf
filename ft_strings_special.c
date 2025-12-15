@@ -1,14 +1,23 @@
 #include "ft_printf.h"
 
-wchar_t	*ft_null_wc(t_data *data, short *is_empty)
+/**
+ * @brief Returns a wide character string representing "(null)".
+ *
+ * @param data Pointer to a t_data structure that holds parsing state and flags.
+ * @param is_empty Pointer to a short that will be set to 1 if the returned
+ *                 string is dynamically allocated.
+ * @return A pointer to the wide character string representing "(null)",
+ *         or NULL if memory allocation fails.
+ */
+wchar_t *ft_null_str(t_data *data, short *is_empty)
 {
-	wchar_t	*null_wcsrt;
+	wchar_t *null_wcsrt;
 
-	null_wcsrt = malloc(sizeof(wchar_t) * 6);
+	null_wcsrt = (wchar_t *)malloc(sizeof(wchar_t) * 7);
 	if (!null_wcsrt)
 	{
 		data->error = 1;
-		return (0);
+		return (NULL);
 	}
 	*is_empty = 1;
 	null_wcsrt[0] = L'(';
@@ -17,14 +26,14 @@ wchar_t	*ft_null_wc(t_data *data, short *is_empty)
 	null_wcsrt[3] = L'l';
 	null_wcsrt[4] = L'l';
 	null_wcsrt[5] = L')';
-	null_wcsrt[6] = 0;
+	null_wcsrt[6] = L'\0';
 	return (null_wcsrt);
 }
 
-char	*ft_inf(short minus, t_data *data)
+char *ft_inf_str(short minus, t_data *data)
 {
-	char	*rtn;
-	short	len;
+	char *rtn;
+	short len;
 
 	len = 0;
 	data->zero = 0;
@@ -43,9 +52,9 @@ char	*ft_inf(short minus, t_data *data)
 	return (rtn);
 }
 
-char	*ft_nan(t_data *data)
+char *ft_nan_str(t_data *data)
 {
-	char	*rtn;
+	char *rtn;
 
 	data->zero = 0;
 	rtn = malloc(sizeof(char) * 4);
@@ -61,7 +70,16 @@ char	*ft_nan(t_data *data)
 	return (rtn);
 }
 
-char	*ft_spacer_c(t_data *data)
+/**
+ * @brief Returns the appropriate space character based on the data flags.
+ *
+ * This function checks the 'zero' flag and 'precision' in the provided
+ * t_data structure to determine whether to return '0' or a space character.
+ *
+ * @param data Pointer to a t_data structure that holds parsing state and flags.
+ * @return A string containing either "0" or " " based on the flags.
+ */
+char *ft_c_space_str(t_data *data)
 {
 	if (data->zero && data->precision < 0)
 		return ("0");
@@ -69,7 +87,7 @@ char	*ft_spacer_c(t_data *data)
 		return (" ");
 }
 
-char	*ft_spacer_f(t_data *data)
+char *ft_f_space_str(t_data *data)
 {
 	if (data->zero)
 		return ("0");

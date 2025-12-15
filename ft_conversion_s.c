@@ -1,10 +1,20 @@
 #include "ft_printf.h"
 
-static char	*ft_processing_s(char *str, t_data *data)
+/**
+ * @brief Processes a regular string for the 's' conversion specifier.
+ *
+ * @param str  The input string to be processed.
+ * @param data Pointer to a t_data structure that holds parsing state and flags.
+ * @return A newly allocated string that has been processed according to
+ *         the precision specified in the t_data structure.
+ *
+ * @note If the input string is NULL, it is replaced with "(null)".
+ */
+static char *ft_processing_s(char *str, t_data *data)
 {
-	char	*rtn;
-	long	i;
-	long	max_len;
+	char *rtn;
+	long i;
+	long max_len;
 
 	if (!str)
 		str = "(null)";
@@ -22,28 +32,43 @@ static char	*ft_processing_s(char *str, t_data *data)
 	return (rtn);
 }
 
-static void	ft_write_wcstr(wchar_t *wcstr, t_data *data)
+/**
+ * @brief Writes a wide character string to standard output.
+ *
+ * @param wcstr The wide character string to be written.
+ * @param data  Pointer to a t_data structure that holds parsing state and flags.
+ */
+static void ft_write_wcstr(wchar_t *wcstr, t_data *data)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (wcstr[i])
-		ft_processing_wc(wcstr[i++], data);
+		ft_wchar_writer(wcstr[i++], data);
 }
 
-static void	ft_processing_ls(wchar_t *wcstr, t_data *data)
+/**
+ * @brief Processes a wide character string for the 'S' conversion specifier.
+ *
+ * @param wcstr The input wide character string to be processed.
+ * @param data  Pointer to a t_data structure that holds parsing state and flags.
+ *
+ * @note If the input wide character string is NULL, it is replaced with
+ *       a representation of "(null)" in wide characters.
+ */
+static void ft_processing_ls(wchar_t *wcstr, t_data *data)
 {
-	long	spaces_count;
-	int		i;
-	char	*spacer;
-	short	empty;
+	long spaces_count;
+	int i;
+	char *spacer;
+	short empty;
 
 	empty = 0;
-	spacer = ft_spacer_c(data);
+	spacer = ft_c_space_str(data);
 	spaces_count = 0;
 	i = 0;
 	if (!wcstr)
-		wcstr = ft_null_wc(data, &empty);
+		wcstr = ft_null_str(data, &empty);
 	while (wcstr[i])
 		i++;
 	if (data->len > i)
@@ -59,30 +84,43 @@ static void	ft_processing_ls(wchar_t *wcstr, t_data *data)
 		free(wcstr);
 }
 
-static void	ft_magic_s(char *str, t_data *data)
+/**
+ * @brief Handles the string conversion with padding and alignment.
+ *
+ * @param str  The string to be printed.
+ * @param data Pointer to a t_data structure that holds parsing state and flags.
+ */
+static void ft_handle_string_conversion(char *str, t_data *data)
 {
-	long	spaces_count;
-	char	*spacer;
+	long spaces_count;
+	char *space;
 
-	spacer = ft_spacer_c(data);
+	space = ft_c_space_str(data);
 	spaces_count = 0;
 	if (data->len > ft_strlen(str))
 		spaces_count = data->len - ft_strlen(str);
 	if (!data->minus)
 	{
 		while (spaces_count--)
-			data->counter += write(1, spacer, 1);
+			data->counter += write(1, space, 1);
 	}
 	data->counter += write(1, str, ft_strlen(str));
 	if (data->minus)
 	{
 		while (spaces_count--)
-			data->counter += write(1, spacer, 1);
+			data->counter += write(1, space, 1);
 	}
 	free(str);
 }
 
-void	ft_conversion_s(va_list arg, const char *format, t_data *data)
+/**
+ * @brief Handles the 's' conversion specifier in the format string.
+ *
+ * @param arg    The variadic argument list to extract values from.
+ * @param format The format string being parsed.
+ * @param data   Pointer to a t_data structure that holds parsing state and flags.
+ */
+void ft_conversion_s(va_list arg, const char *format, t_data *data)
 {
 	if (format[data->index] == 's')
 	{
@@ -92,7 +130,7 @@ void	ft_conversion_s(va_list arg, const char *format, t_data *data)
 			data->len *= -1;
 		}
 		if (!data->l)
-			ft_magic_s(ft_processing_s(va_arg(arg, char *), data), data);
+			ft_handle_string_conversion(ft_processing_s(va_arg(arg, char *), data), data);
 		else
 			ft_processing_ls(va_arg(arg, wint_t *), data);
 	}

@@ -1,6 +1,11 @@
 #include "ft_printf.h"
 
-static void	ft_reset_flags(t_data *data)
+/**
+ * @brief Resets the flag fields in the t_data structure to their default values.
+ *
+ * @param data A pointer to the t_data structure to reset.
+ */
+static void ft_reset_flags(t_data *data)
 {
 	data->space = 0;
 	data->minus = 0;
@@ -15,7 +20,34 @@ static void	ft_reset_flags(t_data *data)
 	data->hh = 0;
 }
 
-static int	ft_lets_go(va_list arg, char *format, t_data *data)
+/**
+ * @brief Allocates and initializes a new t_data structure.
+ *
+ * @return A pointer to the newly allocated t_data structure, or NULL if allocation fails.
+ */
+static t_data *ft_new_data()
+{
+	t_data *data;
+
+	data = (t_data *)malloc(sizeof(t_data));
+	if (!data)
+		return (NULL);
+	data->error = 0;
+	data->counter = 0;
+	data->index = 0;
+	ft_reset_flags(data);
+	return (data);
+}
+
+/**
+ * @brief Processes the format string and handles formatting and printing.
+ *
+ * @param arg A va_list containing the variable arguments to be formatted.
+ * @param format A character pointer representing the format string.
+ * @param data A pointer to the t_data structure containing formatting information.
+ * @return The total number of characters printed, or ERROR if an error occurs.
+ */
+static int ft_process(va_list arg, char *format, t_data *data)
 {
 	while (format[data->index] && !data->error)
 	{
@@ -23,7 +55,7 @@ static int	ft_lets_go(va_list arg, char *format, t_data *data)
 		{
 			ft_reset_flags(data);
 			data->index++;
-			ft_parsing(arg, (char *)format, data);
+			ft_parsing(arg, format, data);
 		}
 		else
 		{
@@ -33,26 +65,35 @@ static int	ft_lets_go(va_list arg, char *format, t_data *data)
 		data->index++;
 	}
 	if (data->error)
-		return (-1);
+		return (ERROR);
 	else
 		return (data->counter);
 }
 
-int	ft_printf(const char *format, ...)
+/**
+ * @brief The ft_printf function is a custom implementation of the standard printf function in C.
+ * It formats and prints data to the standard output based on a format string and a variable number
+ * of arguments.
+ *
+ * @param format A constant character pointer representing the format string that specifies how to format
+ * the subsequent arguments.
+ * @return The function returns the total number of characters printed to the standard output. If an error
+ * occurs during processing, it returns -1.
+ */
+int ft_printf(const char *format, ...)
 {
-	int		rtn;
-	t_data	*data;
-	va_list	arg;
+	va_list arg;
+	t_data *data;
+	int char_number;
 
-	va_start(arg, format);
-	data = malloc(sizeof(t_data));
+	if (!format)
+		return (ERROR);
+	data = ft_new_data();
 	if (!data)
-		return (-1);
-	data->error = 0;
-	data->counter = 0;
-	data->index = 0;
-	rtn = ft_lets_go(arg, (char *)format, data);
+		return (ERROR);
+	va_start(arg, format);
+	char_number = ft_process(arg, (char *)format, data);
 	va_end(arg);
 	free(data);
-	return (rtn);
+	return (char_number);
 }
