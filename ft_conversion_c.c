@@ -1,5 +1,24 @@
 #include "ft_printf.h"
 
+/*
+ * The 'c' conversion specifier in printf is used to print a single character.
+ * Usage examples with different flags:
+ *
+ * 1. Basic usage:
+ *    printf("%c", 'A'); // Output: A
+ *
+ * 2. Field width:
+ *    printf("%5c", 'A'); // Output: "    A" (A is right-aligned in a field of width 5)
+ *
+ * 3. Left alignment with '-' flag:
+ *    printf("%-5c", 'A'); // Output: "A    " (A is left-aligned in a field of width 5)
+ *
+ * 4. Using length modifier 'l' for wide characters:
+ *    printf("%lc", L'Æ'); // Output: Æ (prints a wide character)
+ *
+ * Note: Precision and zero-padding flags are ignored for the 'c' specifier.
+ */
+
 /**
  * @brief Writes a single character to the output and updates the counter.
  *

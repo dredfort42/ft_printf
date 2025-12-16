@@ -40,6 +40,13 @@ long ft_strlen(char *str)
 	return (i);
 }
 
+/**
+ * @brief Calculates the number of digits in the integer part of a floating-point number for a given base.
+ *
+ * @param f    The floating-point number whose integer part is to be evaluated.
+ * @param base The numerical base for digit calculation (e.g., 10 for decimal, 16 for hexadecimal).
+ * @return The number of digits in the integer part of the number.
+ */
 short ft_digits_in_number(long double f, short base)
 {
 	short i;

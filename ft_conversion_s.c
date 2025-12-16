@@ -1,6 +1,31 @@
 #include "ft_printf.h"
 
 /**
+ * printf 's' Specifier Usage:
+ *
+ * The %s format specifier is used to print a null-terminated string.
+ *
+ * Flags and Modifiers:
+ *   - Width: Specifies the minimum number of characters to be printed.
+ *     Example: printf("%10s", "abc"); // Output: "       abc"
+ *
+ *   - Precision: Limits the maximum number of characters to be printed from the string.
+ *     Example: printf("%.3s", "abcdef"); // Output: "abc"
+ *
+ *   - Left-justify (- flag): Left-aligns the string within the given width.
+ *     Example: printf("%-10s", "abc"); // Output: "abc       "
+ *
+ *   - Zero-padding (0 flag): Ignored for %s; spaces are used for padding instead.
+ *
+ *   - Combination:
+ *     Example: printf("%-10.4s", "abcdef"); // Output: "abcd      "
+ *
+ * Notes:
+ *   - If the string is shorter than the specified width, it is padded with spaces.
+ *   - If the string is longer than the specified precision, it is truncated.
+ */
+
+/**
  * @brief Processes a regular string for the 's' conversion specifier.
  *
  * @param str  The input string to be processed.
