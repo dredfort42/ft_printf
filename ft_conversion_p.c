@@ -1,26 +1,6 @@
 #include "ft_printf.h"
 
 /**
- * The `%p` format specifier in `printf` is used to print a pointer value (memory address).
- *
- * Usage:
- *   printf("%p", ptr);
- *   // Outputs the address stored in 'ptr' in an implementation-defined format (typically hexadecimal, e.g., 0x7ffee4bff618).
- *
- * Flags and Modifiers:
- *   - The `%p` specifier does not support most standard flags (such as `+`, `#`, `0`, or space).
- *   - Field width and left-justification (`-`) can be used:
- *       printf("%20p", ptr);    // Output: "       0x7ffee4bff618" // Right-justified in a field of width 20.
- *       printf("%-20p", ptr);   // Output: "0x7ffee4bff618       " // Left-justified in a field of width 20.
- *   - Precision is ignored for `%p`.
- *   - The output format (e.g., use of `0x` prefix, lowercase/uppercase) is implementation-defined.
- *
- * Notes:
- *   - Always pass a `void*` or compatible pointer type to `%p`.
- *   - The result is not guaranteed to be portable across different platforms or compilers.
- */
-
-/**
  * @brief Calculates the number of digits needed to represent the pointer value.
  *
  * @param p    The pointer value.
@@ -102,11 +82,34 @@ static void ft_handle_pointer_conversion(char *str, t_data *data)
 }
 
 /**
- * @brief Handles the 'p' conversion specifier in the format string.
+ * @brief Handles the '%p' conversion specifier for printing pointer values.
  *
- * @param arg    The variadic argument list to extract values from.
- * @param format The format string being parsed.
- * @param data   Pointer to a t_data structure that holds parsing state and flags.
+ * The '%p' format specifier prints a pointer (memory address) in an
+ * implementation-defined hexadecimal format, typically prefixed with '0x'.
+ *
+ * @param arg    Variadic argument list to extract the pointer value.
+ * @param format Format string being parsed.
+ * @param data   Pointer to t_data structure holding parsing state and flags.
+ *
+ * @note
+ *
+ * Flags and Modifiers:
+ *
+ *   - Standard flags ('+', '#', '0', space) are ignored for '%p'.
+ *
+ *   - Field width and left-justification ('-') are supported
+ *
+ *   - Precision is ignored.
+ *
+ *   - Output format (e.g., '0x' prefix, lowercase hex) is implementation-defined.
+ *
+ * Usage Example:
+ *
+ *   - printf("%p", ptr); // Output: 0x7ffee4bff618 (address of 'ptr')
+ *
+ *   - printf("%20p", ptr);   // Right-justified in width 20
+ *
+ *   - printf("%-20p", ptr);  // Left-justified in width 20
  */
 void ft_conversion_p(va_list arg, const char *format, t_data *data)
 {

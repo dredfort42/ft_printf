@@ -1,24 +1,5 @@
 #include "ft_printf.h"
 
-/*
- * The 'c' conversion specifier in printf is used to print a single character.
- * Usage examples with different flags:
- *
- * 1. Basic usage:
- *    printf("%c", 'A'); // Output: A
- *
- * 2. Field width:
- *    printf("%5c", 'A'); // Output: "    A" (A is right-aligned in a field of width 5)
- *
- * 3. Left alignment with '-' flag:
- *    printf("%-5c", 'A'); // Output: "A    " (A is left-aligned in a field of width 5)
- *
- * 4. Using length modifier 'l' for wide characters:
- *    printf("%lc", L'Æ'); // Output: Æ (prints a wide character)
- *
- * Note: Precision and zero-padding flags are ignored for the 'c' specifier.
- */
-
 /**
  * @brief Writes a single character to the output and updates the counter.
  *
@@ -65,16 +46,36 @@ static void ft_handle_char_conversion(va_list arg, t_data *data)
 }
 
 /**
- * @brief Handles the 'c' conversion specifier in the format string.
+ * @brief Handles the '%c' conversion specifier for printing characters.
  *
- * This function processes the 'c' conversion specifier, applying any
- * specified flags, width, and precision from the t_data structure.
- * It updates the counter in the t_data structure to reflect the number
- * of characters printed.
+ * The '%c' format specifier prints a single character. It can also print wide characters
+ * when used with the 'l' length modifier (e.g., '%lc').
  *
- * @param arg    The variadic argument list to extract values from.
- * @param format The format string being parsed.
- * @param data   Pointer to a t_data structure that holds parsing state and flags.
+ * @param arg    Variadic argument list to extract the character value.
+ * @param format Format string being parsed.
+ * @param data   Pointer to t_data structure holding parsing state and flags.
+ *
+ * @note
+ *
+ * Flags and Modifiers:
+ *
+ *   - Field width and left-justification ('-') are supported.
+ *
+ *   - Length modifier 'l' enables wide character output.
+ *
+ *   - Precision and zero-padding flags are ignored for '%c'.
+ *
+ *   - Standard flags ('+', '#', '0', space) are ignored for '%c'.
+ *
+ * Usage Example:
+ *
+ *   - printf("%c", 'A'); // Output: A
+ *
+ *   - printf("%5c", 'A');   // Right-justified in width 5
+ *
+ *   - printf("%-5c", 'A');  // Left-justified in width 5
+ *
+ *   - printf("%lc", L'Æ');  // Output: Æ (prints a wide character)
  */
 void ft_conversion_c(va_list arg, const char *format, t_data *data)
 {
