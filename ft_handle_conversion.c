@@ -1,15 +1,32 @@
 #include "ft_printf.h"
 
 /**
- * @brief Handles the '%' conversion specifier in the format string.
+ * @brief Handles the '%%' conversion specifier for printing a percent sign.
  *
- * This function processes the '%' conversion specifier, applying any
- * specified flags, width, and precision from the t_data structure.
- * It updates the counter in the t_data structure to reflect the number
- * of characters printed.
+ * The '%%' format specifier prints a literal percent character ('%').
  *
- * @param format The format string being parsed.
- * @param data   Pointer to a t_data structure that holds parsing state and flags.
+ * @param format Format string being parsed.
+ * @param data   Pointer to t_data structure holding parsing state and flags.
+ *
+ * @note
+ *
+ * Flags and Modifiers:
+ *
+ *   - Field width and left-justification ('-') are supported.
+ *
+ *   - Zero-padding ('0') is ignored if left-justification is set; spaces are used for padding.
+ *
+ *   - Precision is ignored.
+ *
+ *   - If the width is greater than 1, the output is padded with spaces to the specified width.
+ *
+ * Usage Example:
+ *
+ *   - printf("%%");         // Output: '%'
+ *
+ *   - printf("%5%%");      // Output: '    %'`
+ *
+ *   - printf("%-5%%");     // Output: '%    '
  */
 static void ft_conversion_percent(const char *format, t_data *data)
 {

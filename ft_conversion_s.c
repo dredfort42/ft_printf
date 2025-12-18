@@ -1,31 +1,6 @@
 #include "ft_printf.h"
 
 /**
- * printf 's' Specifier Usage:
- *
- * The %s format specifier is used to print a null-terminated string.
- *
- * Flags and Modifiers:
- *   - Width: Specifies the minimum number of characters to be printed.
- *     Example: printf("%10s", "abc"); // Output: "       abc"
- *
- *   - Precision: Limits the maximum number of characters to be printed from the string.
- *     Example: printf("%.3s", "abcdef"); // Output: "abc"
- *
- *   - Left-justify (- flag): Left-aligns the string within the given width.
- *     Example: printf("%-10s", "abc"); // Output: "abc       "
- *
- *   - Zero-padding (0 flag): Ignored for %s; spaces are used for padding instead.
- *
- *   - Combination:
- *     Example: printf("%-10.4s", "abcdef"); // Output: "abcd      "
- *
- * Notes:
- *   - If the string is shorter than the specified width, it is padded with spaces.
- *   - If the string is longer than the specified precision, it is truncated.
- */
-
-/**
  * @brief Processes a regular string for the 's' conversion specifier.
  *
  * @param str  The input string to be processed.
@@ -139,11 +114,41 @@ static void ft_handle_string_conversion(char *str, t_data *data)
 }
 
 /**
- * @brief Handles the 's' conversion specifier in the format string.
+ * @brief Handles the '%s' conversion specifier for printing strings.
  *
- * @param arg    The variadic argument list to extract values from.
- * @param format The format string being parsed.
- * @param data   Pointer to a t_data structure that holds parsing state and flags.
+ * The '%s' format specifier prints a null-terminated string.
+ *
+ * @param arg    Variadic argument list to extract the string value.
+ * @param format Format string being parsed.
+ * @param data   Pointer to t_data structure holding parsing state and flags.
+ *
+ * @note
+ *
+ * Flags and Modifiers:
+ *
+ *   - Field width and left-justification ('-') are supported.
+ *
+ *   - Precision limits the maximum number of characters printed from the string.
+ *
+ *   - Zero-padding ('0') is ignored; spaces are used for padding.
+ *
+ *   - If the string is shorter than the specified width, it is padded with spaces.
+ *
+ *   - If the string is longer than the specified precision, it is truncated.
+ *
+ *   - If the input string is NULL, it is replaced with "(null)".
+ *
+ * Usage Example:
+ *
+ *   - printf("%s", str); // Output: the string 'str'
+ *
+ *   - printf("%10s", "abc");   // Right-justified in width 10
+ *
+ *   - printf("%-10s", "abc");  // Left-justified in width 10
+ *
+ *   - printf("%.3s", "abcdef"); // Output: "abc"
+ *
+ *   - printf("%-10.4s", "abcdef"); // Output: "abcd      "
  */
 void ft_conversion_s(va_list arg, const char *format, t_data *data)
 {
