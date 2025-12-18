@@ -53,6 +53,7 @@ static char *ft_processing_p(unsigned long long p, t_data *data)
 	rtn[0] = '0';
 	return (rtn);
 }
+
 /**
  * @brief Handles the 'p' conversion specifier in the format string.
  *

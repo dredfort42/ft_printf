@@ -78,6 +78,13 @@ char *ft_capitalizer(char *str)
 	return (str);
 }
 
+/**
+ * @brief Converts an unsigned long long integer to its hexadecimal string representation.
+ *
+ * @param rtn           Pointer to the buffer where the resulting hexadecimal string will be stored.
+ * @param num           The unsigned long long integer to convert to hexadecimal.
+ * @param digits_count  Pointer to a short where the function will store the number of digits in the hexadecimal representation.
+ */
 void ft_hex(char *rtn, unsigned long long num, short *digits_count)
 {
 	char *hex;
