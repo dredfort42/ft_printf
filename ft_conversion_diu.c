@@ -1,9 +1,9 @@
 #include "ft_printf.h"
 
-static char	*ft_processing_u(unsigned long long num, t_data *data)
+static char *ft_processing_u(unsigned long long num, t_data *data)
 {
-	char	*rtn;
-	short	digits_count;
+	char *rtn;
+	short digits_count;
 
 	if (data->h)
 		num = (unsigned short)num;
@@ -28,10 +28,10 @@ static char	*ft_processing_u(unsigned long long num, t_data *data)
 	return (rtn);
 }
 
-static char	*ft_processing_di(long long num, t_data *data)
+static char *ft_processing_di(long long num, t_data *data)
 {
-	char	*rtn;
-	short	num_is_negative;
+	char *rtn;
+	short num_is_negative;
 
 	if (data->h)
 		num = (short)num;
@@ -53,7 +53,7 @@ static char	*ft_processing_di(long long num, t_data *data)
 	return (rtn);
 }
 
-static void	ft_prepare_di_processing(va_list arg, t_data *data)
+static void ft_prepare_di_processing(va_list arg, t_data *data)
 {
 	if (!data->l && !data->ll)
 		ft_magic_diuxX(ft_processing_di(va_arg(arg, int), data), data);
@@ -61,23 +61,54 @@ static void	ft_prepare_di_processing(va_list arg, t_data *data)
 		ft_magic_diuxX(ft_processing_di(va_arg(arg, long), data), data);
 	if (data->ll)
 		ft_magic_diuxX(ft_processing_di(va_arg(arg, long long), data),
-			data);
+					   data);
 }
 
-static void	ft_prepare_u_processing(va_list arg, t_data *data)
+static void ft_prepare_u_processing(va_list arg, t_data *data)
 {
 	if (!data->l && !data->ll)
 		ft_magic_diuxX(ft_processing_u(va_arg(arg, unsigned), data),
-			data);
+					   data);
 	if (data->l)
 		ft_magic_diuxX(ft_processing_u(va_arg(arg, unsigned long), data),
-			data);
+					   data);
 	if (data->ll)
 		ft_magic_diuxX(ft_processing_u(va_arg(arg, unsigned long long),
-				data), data);
+									   data),
+					   data);
 }
 
-void	ft_conversion_diu(va_list arg, const char *format, t_data *data)
+/**
+ * Handles the 'd', 'i', and 'u' conversion specifiers for the printf function.
+ *
+ * Description:
+ * - 'd' and 'i': Print signed decimal integers. Both specifiers are functionally identical.
+ * - 'u': Prints unsigned decimal integers.
+ *
+ * Supported Flags and Their Effects:
+ * - '+': Forces a sign (+ or -) to be used on a number.
+ * - ' ': (space) If no sign is going to be written, a blank space is inserted before the value.
+ * - '-': Left-justify within the given field width; Right justification is the default.
+ * - '0': Left-pads the number with zeros instead of spaces when padding is specified.
+ * - Field Width: Minimum number of characters to be printed. If the value to be printed is shorter than this number, the result is padded.
+ * - Precision: For integer conversions, precision specifies the minimum number of digits to appear. If the value has fewer digits, it is padded with leading zeros.
+ *
+ * Usage Examples:
+ *   printf("%d", -42);        // Output: -42
+ *   printf("%+d", 42);        // Output: +42
+ *   printf("% i", 42);        // Output: ` 42` (with a leading space)
+ *   printf("%05d", 42);       // Output: 00042
+ *   printf("%-5u", 42);       // Output: `42   ` (left-justified, padded with spaces)
+ *   printf("%.3i", 7);        // Output: 007
+ *
+ * Notes:
+ * - For 'u', negative values are converted to their unsigned representation.
+ *   printf("%u", -1);    // Output: 4294967295 (on systems where unsigned int is 32 bits)
+ *
+ * - Length modifiers (e.g., 'l', 'll', 'h', 'hh') can be used to specify the size of the argument.
+ */
+
+void ft_conversion_diu(va_list arg, const char *format, t_data *data)
 {
 	if (data->len < 0)
 	{
