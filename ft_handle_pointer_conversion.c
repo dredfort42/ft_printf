@@ -44,12 +44,14 @@ static char *ft_process_pointer(unsigned long long p, t_printf_state *state)
 		return (NULL);
 	}
 	result[digits_count--] = '\0';
-	while (p)
-	{
-		result[digits_count] = hex[(p % 16)];
-		p /= 16;
-		digits_count--;
-	}
+	if (p == 0)
+		result[digits_count--] = '0';
+	else
+		while (p)
+		{
+			result[digits_count--] = hex[(p % 16)];
+			p /= 16;
+		}
 	result[digits_count--] = 'x';
 	result[digits_count] = '0';
 	return (result);
