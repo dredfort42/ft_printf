@@ -10,6 +10,9 @@ static short ft_pointer_digits_count(unsigned long long p)
 {
 	short digits_count;
 
+	if (p == 0)
+		return (1);
+
 	digits_count = 0;
 	while (p)
 	{
