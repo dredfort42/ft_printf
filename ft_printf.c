@@ -1,73 +1,51 @@
 #include "ft_printf.h"
 
 /**
- * @brief Resets the flag fields in the t_data structure to their default values.
+ * @brief Resets all formatting flags to their default state.
  *
- * @param data A pointer to the t_data structure to reset.
+ * @param state Pointer to a t_printf_state struct to reset flags.
  */
-static void ft_reset_flags(t_data *data)
+static void ft_reset_flags(t_printf_state *state)
 {
-	data->space = 0;
-	data->minus = 0;
-	data->plus = 0;
-	data->sharp = 0;
-	data->zero = 0;
-	data->len = 0;
-	data->precision = -1;
-	data->l = 0;
-	data->ll = 0;
-	data->h = 0;
-	data->hh = 0;
+	state->flag_minus = FALSE;
+	state->flag_zero = FALSE;
+	state->precision = -1;
+	state->field_width = 0;
+	state->flag_hash = FALSE;
+	state->flag_space = FALSE;
+	state->flag_plus = FALSE;
 }
 
 /**
- * @brief Allocates and initializes a new t_data structure.
+ * @brief Processes the format string and handles conversion specifiers.
  *
- * @return A pointer to the newly allocated t_data structure, or NULL if allocation fails.
+ * @param format The format string being parsed.
+ * @param arg    The variadic argument list to extract values from.
+ * @param state  Pointer to a t_printf_state struct holding parsing state and results.
+ * @return The total number of characters printed, or ERROR on failure.
  */
-static t_data *ft_new_data()
+static int ft_process(const char *format, va_list arg,
+					  t_printf_state *state)
 {
-	t_data *data;
-
-	data = (t_data *)malloc(sizeof(t_data));
-	if (!data)
-		return (NULL);
-	data->error = 0;
-	data->counter = 0;
-	data->index = 0;
-	ft_reset_flags(data);
-	return (data);
-}
-
-/**
- * @brief Processes the format string and handles formatting and printing.
- *
- * @param arg A va_list containing the variable arguments to be formatted.
- * @param format A character pointer representing the format string.
- * @param data A pointer to the t_data structure containing formatting information.
- * @return The total number of characters printed, or ERROR if an error occurs.
- */
-static int ft_process(va_list arg, char *format, t_data *data)
-{
-	while (format[data->index] && !data->error)
+	while (format[state->format_pos] && !state->has_error)
 	{
-		if (format[data->index] == '%')
+		if (format[state->format_pos] == '%')
 		{
-			ft_reset_flags(data);
-			data->index++;
-			ft_parsing(arg, format, data);
+			ft_reset_flags(state);
+			state->format_pos++;
+			ft_parsing(arg, format, state);
 		}
 		else
 		{
-			write(1, &format[data->index], 1);
-			data->counter++;
+			write(1, &format[state->format_pos], 1);
+			state->printed_chars++;
 		}
-		data->index++;
+		state->format_pos++;
 	}
-	if (data->error)
+	if (state->has_error)
 		return (ERROR);
 	else
-		return (data->counter);
+		return (state->printed_chars);
 }
 
 /**
@@ -83,17 +61,22 @@ static int ft_process(va_list arg, char *format, t_data *data)
 int ft_printf(const char *format, ...)
 {
 	va_list arg;
-	t_data *data;
-	int char_number;
+	t_printf_state *state;
+	int printed_chars;
 
 	if (!format)
 		return (ERROR);
-	data = ft_new_data();
-	if (!data)
+	state = (t_printf_state *)malloc(sizeof(t_printf_state));
+	if (!state)
 		return (ERROR);
+	state->printed_chars = 0;
+	state->format_pos = 0;
+	state->has_error = FALSE;
 	va_start(arg, format);
-	char_number = ft_process(arg, (char *)format, data);
+	printed_chars = ft_process(format, arg, state);
 	va_end(arg);
-	free(data);
-	return (char_number);
+	if (state->has_error)
+		printed_chars = ERROR;
+	free(state);
+	return (printed_chars);
 }
