@@ -62,39 +62,37 @@ static char *ft_process_string(char *str, t_printf_state *state)
  *
  * Usage Example:
  *
- *   - printf("%s", str); // Output: the string 'str'
+ *   - printf("%s", "abc");          // Output: the string 'abc'
  *
- *   - printf("%10s", "abc");   // Right-justified in width 10
+ *   - printf("%10s", "abc");        // Output: '       abc' (right-justified in width 10)
  *
- *   - printf("%-10s", "abc");  // Left-justified in width 10
+ *   - printf("%-10s", "abc");       // Output: 'abc       ' (left-justified in width 10)
  *
- *   - printf("%.3s", "abcdef"); // Output: "abc"
+ *   - printf("%.3s", "abcdef");     // Output: "abc"
  *
- *   - printf("%-10.4s", "abcdef"); // Output: "abcd      "
+ *   - printf("%-10.4s", "abcdef");  // Output: "abcd      "
  */
 void ft_handle_string_conversion(va_list arg, const char *format, t_printf_state *state)
 {
 	char *str;
 	long spaces_count;
+	int str_len;
 
 	if (format[state->format_pos] == 's')
 	{
-		if (state->field_width < 0)
-		{
-			state->flag_minus = TRUE;
-			state->field_width *= -1;
-		}
 		str = ft_process_string(va_arg(arg, char *), state);
-
+		if (!str)
+			return;
+		str_len = (int)ft_strlen(str);
 		spaces_count = 0;
-		if (state->field_width > (int)ft_strlen(str))
-			spaces_count = state->field_width - (int)ft_strlen(str);
+		if (state->field_width > str_len)
+			spaces_count = state->field_width - str_len;
 		if (!state->flag_minus)
 		{
 			while (spaces_count--)
 				state->printed_chars += write(1, " ", 1);
 		}
-		state->printed_chars += write(1, str, ft_strlen(str));
+		state->printed_chars += write(1, str, str_len);
 		if (state->flag_minus)
 		{
 			while (spaces_count--)

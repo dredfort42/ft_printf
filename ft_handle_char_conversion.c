@@ -17,7 +17,7 @@
  *
  * Usage Example:
  *
- *   - printf("%c", 'A');    // Output: A
+ *   - printf("%c", 'A');    // Output: 'A'
  *
  *   - printf("%5c", 'A');   // Output: '    A' (right-justified in width 5)
  *
@@ -25,16 +25,11 @@
  */
 void ft_handle_char_conversion(va_list arg, const char *format, t_printf_state *state)
 {
+	char c;
+
 	if (format[state->format_pos] == 'c')
 	{
-		char c;
-
 		c = (char)va_arg(arg, int);
-		if (state->field_width < 0)
-		{
-			state->flag_minus = TRUE;
-			state->field_width *= -1;
-		}
 		if (state->flag_minus)
 			state->flag_zero = FALSE;
 		if (!state->flag_minus)
