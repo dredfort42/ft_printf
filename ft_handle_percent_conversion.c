@@ -3,10 +3,8 @@
 /**
  * @brief Handles the '%%' conversion specifier for printing a percent sign.
  *
- * The '%%' format specifier prints a literal percent character ('%').
- *
  * @param format Format string being parsed.
- * @param data   Pointer to t_data structure holding parsing state and flags.
+ * @param state   Pointer to t_printf_state structure holding parsing state and flags.
  *
  * @note
  *

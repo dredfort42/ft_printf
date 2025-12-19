@@ -28,7 +28,7 @@ SRCS        := ft_printf.c \
 			   ft_parsing.c \
 			   ft_handle_percent_conversion.c \
 			   ft_handle_char_conversion.c \
-			   ft_handle_string_conversion.c 
+			   ft_handle_string_conversion.c
 # 			   \
 # 			   ft_handle_char.c \
 # 			   ft_handle_string.c \

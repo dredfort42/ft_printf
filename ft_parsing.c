@@ -95,6 +95,7 @@ static void ft_handle_conversions(va_list arg, const char *format, t_printf_stat
 {
 	ft_handle_percent_conversion(format, state);
 	ft_handle_char_conversion(arg, format, state);
+	ft_handle_string_conversion(arg, format, state);
 	// ft_conversion_s(arg, format, data);
 	// ft_conversion_p(arg, format, data);
 	// ft_conversion_diu(arg, format, data);
