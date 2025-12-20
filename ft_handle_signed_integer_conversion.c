@@ -88,15 +88,19 @@ static void ft_print_padding(int count, char pad_char, t_printf_state *state)
  * @param str       The numeric string to print.
  * @param str_len   The length of the numeric string.
  * @param padding   The amount of padding needed.
- * @param pad_char  The character to use for padding (' ' or '0').
  * @param state     Pointer to t_printf_state structure holding parsing state and flags.
  */
-static void ft_print_formatted_number(char *str, int str_len, int padding,
-                                      char pad_char, t_printf_state *state)
+static void ft_print_formatted_number(char *str, int str_len, int padding, t_printf_state *state)
 {
-    if (!state->flag_minus && pad_char == ' ')
+    char padding_char;
+
+    if (state->flag_zero && !state->flag_minus && state->precision < 0)
+        padding_char = '0';
+    else
+        padding_char = ' ';
+    if (!state->flag_minus && padding_char == ' ')
         ft_print_padding(padding, ' ', state);
-    if (pad_char == '0' && !state->flag_minus)
+    if (padding_char == '0' && !state->flag_minus)
     {
         if (str[0] == '+' || str[0] == '-' || str[0] == ' ')
             state->printed_chars += write(1, str, 1);
@@ -170,7 +174,6 @@ void ft_handle_signed_integer_conversion(va_list arg, const char *format, t_prin
     char *precision_str;
     int str_len;
     int padding;
-    char pad_char;
     int num;
 
     if (format[state->format_pos] != 'd' && format[state->format_pos] != 'i')
@@ -187,8 +190,10 @@ void ft_handle_signed_integer_conversion(va_list arg, const char *format, t_prin
         return;
     }
     str_len = ft_strlen(precision_str);
-    padding = (state->field_width > str_len) ? state->field_width - str_len : 0;
-    pad_char = (state->flag_zero && !state->flag_minus && state->precision < 0) ? '0' : ' ';
-    ft_print_formatted_number(precision_str, str_len, padding, pad_char, state);
+    if (state->field_width > str_len)
+        padding = state->field_width - str_len;
+    else
+        padding = 0;
+    ft_print_formatted_number(precision_str, str_len, padding, state);
     free(precision_str);
 }
