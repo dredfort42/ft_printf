@@ -30,7 +30,8 @@ SRCS        := ft_printf.c \
 			   ft_handle_char_conversion.c \
 			   ft_handle_string_conversion.c \
 			   ft_handle_pointer_conversion.c \
-			   ft_handle_signed_integer_conversion.c
+			   ft_handle_signed_integer_conversion.c \
+			   ft_process_integer_utils.c
 # 			   \
 # 			   ft_handle_char.c \
 # 			   ft_handle_string.c \
