@@ -22,28 +22,27 @@
  *
  *   - printf("%%");        // Output: '%'
  *
- *   - printf("%5%%");      // Output: '    %'
+ *   - printf("%5%%");      // Output: '␣␣␣␣%'
  *
- *   - printf("%-5%%");     // Output: '%    '
+ *   - printf("%-5%%");     // Output: '%␣␣␣␣'
  */
 void ft_handle_percent_conversion(const char *format, t_printf_state *state)
 {
-	if (format[state->format_pos] == '%')
+	if (format[state->format_pos] != '%')
+		return;
+	state->precision = -1;
+	if (state->field_width < 0)
 	{
-		state->precision = -1;
-		if (state->field_width < 0)
-		{
-			state->flag_minus = TRUE;
-			state->field_width *= -1;
-		}
-		if (state->flag_minus)
-			state->flag_zero = FALSE;
-		if (!state->flag_minus)
-			while (state->field_width-- - 1 > 0)
-				state->printed_chars += write(1, " ", 1);
-		state->printed_chars += write(1, "%", 1);
-		if (state->flag_minus)
-			while (state->field_width-- - 1 > 0)
-				state->printed_chars += write(1, " ", 1);
+		state->flag_minus = TRUE;
+		state->field_width *= -1;
 	}
+	if (state->flag_minus)
+		state->flag_zero = FALSE;
+	if (!state->flag_minus)
+		while (state->field_width-- - 1 > 0)
+			state->printed_chars += write(1, " ", 1);
+	state->printed_chars += write(1, "%", 1);
+	if (state->flag_minus)
+		while (state->field_width-- - 1 > 0)
+			state->printed_chars += write(1, " ", 1);
 }

@@ -79,9 +79,9 @@ static char *ft_process_pointer(unsigned long long p, t_printf_state *state)
  *
  *   - printf("%p", ptr);     // Output: '0x7ffee4bff618' (address of 'ptr')
  *
- *   - printf("%20p", ptr);   // Output: '         0x7ffee4bff618' (right-justified in width 20)
+ *   - printf("%20p", ptr);   // Output: '␣␣␣␣␣␣␣␣␣␣␣0x7ffee4bff618' (right-justified in width 20)
  *
- *   - printf("%-20p", ptr);  // Output: '0x7ffee4bff618         ' (left-justified in width 20)
+ *   - printf("%-20p", ptr);  // Output: '0x7ffee4bff618␣␣␣␣␣␣␣␣␣␣␣' (left-justified in width 20)
  */
 void ft_handle_pointer_conversion(va_list arg, const char *format, t_printf_state *state)
 {
@@ -89,26 +89,25 @@ void ft_handle_pointer_conversion(va_list arg, const char *format, t_printf_stat
 	long spaces_count;
 	int str_len;
 
-	if (format[state->format_pos] == 'p')
+	if (format[state->format_pos] != 'p')
+		return;
+	str = ft_process_pointer(va_arg(arg, unsigned long long), state);
+	if (!str)
+		return;
+	str_len = (int)ft_strlen(str);
+	spaces_count = 0;
+	if (state->field_width > str_len)
+		spaces_count = state->field_width - str_len;
+	if (!state->flag_minus)
 	{
-		str = ft_process_pointer(va_arg(arg, unsigned long long), state);
-		if (!str)
-			return;
-		str_len = (int)ft_strlen(str);
-		spaces_count = 0;
-		if (state->field_width > str_len)
-			spaces_count = state->field_width - str_len;
-		if (!state->flag_minus)
-		{
-			while (spaces_count--)
-				state->printed_chars += write(1, " ", 1);
-		}
-		state->printed_chars += write(1, str, str_len);
-		if (state->flag_minus)
-		{
-			while (spaces_count--)
-				state->printed_chars += write(1, " ", 1);
-		}
-		free(str);
+		while (spaces_count--)
+			state->printed_chars += write(1, " ", 1);
 	}
+	state->printed_chars += write(1, str, str_len);
+	if (state->flag_minus)
+	{
+		while (spaces_count--)
+			state->printed_chars += write(1, " ", 1);
+	}
+	free(str);
 }

@@ -33,5 +33,6 @@ void ft_handle_percent_conversion(const char *format, t_printf_state *state);
 void ft_handle_char_conversion(va_list arg, const char *format, t_printf_state *state);
 void ft_handle_string_conversion(va_list arg, const char *format, t_printf_state *state);
 void ft_handle_pointer_conversion(va_list arg, const char *format, t_printf_state *state);
+void ft_handle_signed_integer_conversion(va_list arg, const char *format, t_printf_state *state);
 
 #endif // FT_PRINTF_H

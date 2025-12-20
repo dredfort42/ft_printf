@@ -19,25 +19,24 @@
  *
  *   - printf("%c", 'A');    // Output: 'A'
  *
- *   - printf("%5c", 'A');   // Output: '    A' (right-justified in width 5)
+ *   - printf("%5c", 'A');   // Output: '␣␣␣␣A' (right-justified in width 5)
  *
- *   - printf("%-5c", 'A');  // Output: 'A    ' (left-justified in width 5)
+ *   - printf("%-5c", 'A');  // Output: 'A␣␣␣␣' (left-justified in width 5)
  */
 void ft_handle_char_conversion(va_list arg, const char *format, t_printf_state *state)
 {
 	char c;
 
-	if (format[state->format_pos] == 'c')
-	{
-		c = (char)va_arg(arg, int);
-		if (state->flag_minus)
-			state->flag_zero = FALSE;
-		if (!state->flag_minus)
-			while (state->field_width-- - 1 > 0)
-				state->printed_chars += write(1, " ", 1);
-		state->printed_chars += write(1, &c, 1);
-		if (state->flag_minus)
-			while (state->field_width-- - 1 > 0)
-				state->printed_chars += write(1, " ", 1);
-	}
+	if (format[state->format_pos] != 'c')
+		return;
+	c = (char)va_arg(arg, int);
+	if (state->flag_minus)
+		state->flag_zero = FALSE;
+	if (!state->flag_minus)
+		while (state->field_width-- - 1 > 0)
+			state->printed_chars += write(1, " ", 1);
+	state->printed_chars += write(1, &c, 1);
+	if (state->flag_minus)
+		while (state->field_width-- - 1 > 0)
+			state->printed_chars += write(1, " ", 1);
 }
