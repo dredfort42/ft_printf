@@ -99,7 +99,7 @@ static void ft_handle_conversions(va_list arg, const char *format, t_printf_stat
 	ft_handle_pointer_conversion(arg, format, state);
 	ft_handle_signed_integer_conversion(arg, format, state);
 	ft_handle_unsigned_integer_conversion(arg, format, state);
-	// ft_handle_hex_conversion(arg, format, state);
+	ft_handle_hex_conversion(arg, format, state);
 
 	// ft_conversion_diu(arg, format, data);
 	// ft_conversion_x(arg, format, data);

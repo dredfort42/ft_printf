@@ -1,63 +1,6 @@
 #include "ft_printf.h"
 
 /**
- * @brief Calculates the number of digits needed to represent the pointer value.
- *
- * @param p     The pointer value.
- * @return The number of digits required for the pointer representation.
- */
-static short ft_pointer_digits_count(unsigned long long p)
-{
-	short digits_count;
-
-	if (p == 0)
-		return (1);
-
-	digits_count = 0;
-	while (p)
-	{
-		p /= 16;
-		digits_count++;
-	}
-	return (digits_count);
-}
-
-/**
- * @brief Processes the pointer value into a hexadecimal string representation.
- *
- * @param p     The pointer value to be processed.
- * @param state Pointer to a t_printf_state structure that holds parsing state and flags.
- * @return A newly allocated string representing the pointer in hexadecimal format.
- */
-static char *ft_process_pointer(unsigned long long p, t_printf_state *state)
-{
-	char *result;
-	short digits_count;
-	char *hex;
-
-	hex = "0123456789abcdef";
-	digits_count = ft_pointer_digits_count(p) + 2;
-	result = (char *)malloc(sizeof(char) * (digits_count + 1));
-	if (!result)
-	{
-		state->has_error = TRUE;
-		return (NULL);
-	}
-	result[digits_count--] = '\0';
-	if (p == 0)
-		result[digits_count--] = '0';
-	else
-		while (p)
-		{
-			result[digits_count--] = hex[(p % 16)];
-			p /= 16;
-		}
-	result[digits_count--] = 'x';
-	result[digits_count] = '0';
-	return (result);
-}
-
-/**
  * @brief Handles the '%p' conversion specifier for printing pointer (memory address) values in an
  *        implementation-defined hexadecimal format, typically prefixed with '0x'.
  *
@@ -91,7 +34,7 @@ void ft_handle_pointer_conversion(va_list arg, const char *format, t_printf_stat
 
 	if (format[state->format_pos] != 'p')
 		return;
-	str = ft_process_pointer(va_arg(arg, unsigned long long), state);
+	str = ft_strjoin("0x", ft_ull_to_hex(va_arg(arg, unsigned long long), state));
 	if (!str)
 		return;
 	str_len = (int)ft_strlen(str);

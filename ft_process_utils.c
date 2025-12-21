@@ -1,6 +1,59 @@
 #include "ft_printf.h"
 
 /**
+ * @brief Counts the number of hexadecimal digits needed to represent the number.
+ *
+ * @param num The number to be evaluated.
+ * @return The count of hexadecimal digits.
+ */
+static short ft_count_hex_digits(unsigned long long num)
+{
+    short digits = 0;
+    if (num == 0)
+        return 1;
+    while (num)
+    {
+        num /= 16;
+        digits++;
+    }
+    return digits;
+}
+
+/**
+ * @brief Converts an unsigned long long number to its hexadecimal string representation.
+ *
+ * @param num   The number to be converted.
+ * @param state Pointer to t_printf_state structure holding parsing state and flags.
+ * @return A newly allocated string representing the hexadecimal value of the number.
+ */
+char *ft_ull_to_hex(unsigned long long num, t_printf_state *state)
+{
+    const char *hex_chars;
+    short digits_count;
+    char *result;
+    short i;
+
+    hex_chars = "0123456789abcdef";
+    digits_count = ft_count_hex_digits(num);
+    result = (char *)malloc(sizeof(char) * (digits_count + 1));
+    if (!result)
+    {
+        state->has_error = TRUE;
+        return NULL;
+    }
+    result[digits_count] = '\0';
+    i = digits_count - 1;
+    if (num == 0)
+        result[i--] = '0';
+    while (num)
+    {
+        result[i--] = hex_chars[num % 16];
+        num /= 16;
+    }
+    return result;
+}
+
+/**
  * @brief Applies precision to the numeric string representation.
  *
  * @param num_str   The original numeric string.
