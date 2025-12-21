@@ -37,8 +37,8 @@ void ft_handle_signed_integer_conversion(va_list arg, const char *format, t_prin
 void ft_handle_unsigned_integer_conversion(va_list arg, const char *format, t_printf_state *state);
 void ft_handle_hex_conversion(va_list arg, const char *format, t_printf_state *state);
 
-char *ft_ull_to_hex(unsigned long long num, t_printf_state *state);
-char *ft_apply_precision_to_number(char *num_str, int precision, int is_negative);
-void ft_print_formatted_number(char *str, int str_len, int padding, t_printf_state *state);
+char *ft_ull_to_hex(unsigned long long num, t_printf_state *state, int is_uppercase);
+char *ft_apply_precision(char *num_str, int precision, int is_negative);
+void ft_print_formatted_conversion(char *str, int str_len, int padding, t_printf_state *state);
 
 #endif // FT_PRINTF_H

@@ -89,7 +89,7 @@ void ft_handle_unsigned_integer_conversion(va_list arg, const char *format, t_pr
     str = ft_process_unsigned_integer(num, state);
     if (!str)
         return;
-    precision_str = ft_apply_precision_to_number(str, state->precision, 0);
+    precision_str = ft_apply_precision(str, state->precision, 0);
     free(str);
     if (!precision_str)
     {
@@ -101,6 +101,6 @@ void ft_handle_unsigned_integer_conversion(va_list arg, const char *format, t_pr
         padding = state->field_width - str_len;
     else
         padding = 0;
-    ft_print_formatted_number(precision_str, str_len, padding, state);
+    ft_print_formatted_conversion(precision_str, str_len, padding, state);
     free(precision_str);
 }

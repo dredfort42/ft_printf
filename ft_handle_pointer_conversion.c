@@ -1,6 +1,28 @@
 #include "ft_printf.h"
 
 /**
+ * @brief Processes the pointer value to create its string representation in hexadecimal format
+ *        prefixed with '0x'.
+ *
+ * @param ptr   The pointer value to be processed.
+ * @param state Pointer to t_printf_state structure holding parsing state and flags.
+ * @return A newly allocated string representing the pointer in hexadecimal format.
+ */
+static char *ft_porocess_pointer(unsigned long long ptr, t_printf_state *state)
+{
+	char *hex_str;
+	char *result;
+
+	hex_str = ft_ull_to_hex(ptr, state, 0);
+	if (!hex_str)
+		return NULL;
+	result = ft_strjoin("0x", hex_str);
+	free(hex_str);
+	if (!result)
+		return NULL;
+	return result;
+}
+/**
  * @brief Handles the '%p' conversion specifier for printing pointer (memory address) values in an
  *        implementation-defined hexadecimal format, typically prefixed with '0x'.
  *
@@ -34,7 +56,7 @@ void ft_handle_pointer_conversion(va_list arg, const char *format, t_printf_stat
 
 	if (format[state->format_pos] != 'p')
 		return;
-	str = ft_strjoin("0x", ft_ull_to_hex(va_arg(arg, unsigned long long), state));
+	str = ft_porocess_pointer(va_arg(arg, unsigned long long), state);
 	if (!str)
 		return;
 	str_len = (int)ft_strlen(str);
@@ -42,15 +64,11 @@ void ft_handle_pointer_conversion(va_list arg, const char *format, t_printf_stat
 	if (state->field_width > str_len)
 		spaces_count = state->field_width - str_len;
 	if (!state->flag_minus)
-	{
 		while (spaces_count--)
 			state->printed_chars += write(1, " ", 1);
-	}
 	state->printed_chars += write(1, str, str_len);
 	if (state->flag_minus)
-	{
 		while (spaces_count--)
 			state->printed_chars += write(1, " ", 1);
-	}
 	free(str);
 }

@@ -103,18 +103,18 @@ void ft_handle_signed_integer_conversion(va_list arg, const char *format, t_prin
     str = ft_process_signed_integer(num, state);
     if (!str)
         return;
-    precision_str = ft_apply_precision_to_number(str, state->precision, num < 0);
+    precision_str = ft_apply_precision(str, state->precision, num < 0);
     free(str);
     if (!precision_str)
     {
         state->has_error = TRUE;
         return;
     }
-    str_len = ft_strlen(precision_str);
+    str_len = (int)ft_strlen(precision_str);
     if (state->field_width > str_len)
         padding = state->field_width - str_len;
     else
         padding = 0;
-    ft_print_formatted_number(precision_str, str_len, padding, state);
+    ft_print_formatted_conversion(precision_str, str_len, padding, state);
     free(precision_str);
 }

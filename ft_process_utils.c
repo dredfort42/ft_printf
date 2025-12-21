@@ -24,16 +24,20 @@ static short ft_count_hex_digits(unsigned long long num)
  *
  * @param num   The number to be converted.
  * @param state Pointer to t_printf_state structure holding parsing state and flags.
+ * @param is_uppercase Flag indicating if the hexadecimal letters should be uppercase.
  * @return A newly allocated string representing the hexadecimal value of the number.
  */
-char *ft_ull_to_hex(unsigned long long num, t_printf_state *state)
+char *ft_ull_to_hex(unsigned long long num, t_printf_state *state, int is_uppercase)
 {
     const char *hex_chars;
     short digits_count;
     char *result;
     short i;
 
-    hex_chars = "0123456789abcdef";
+    if (is_uppercase)
+        hex_chars = "0123456789ABCDEF";
+    else
+        hex_chars = "0123456789abcdef";
     digits_count = ft_count_hex_digits(num);
     result = (char *)malloc(sizeof(char) * (digits_count + 1));
     if (!result)
@@ -61,7 +65,7 @@ char *ft_ull_to_hex(unsigned long long num, t_printf_state *state)
  * @param is_negative Flag indicating if the number is negative.
  * @return A newly allocated string with applied precision.
  */
-char *ft_apply_precision_to_number(char *num_str, int precision, int is_negative)
+char *ft_apply_precision(char *num_str, int precision, int is_negative)
 {
     char *result;
     char *digits;
@@ -109,7 +113,7 @@ static void ft_print_padding(int count, char pad_char, t_printf_state *state)
  * @param padding   The amount of padding needed.
  * @param state     Pointer to t_printf_state structure holding parsing state and flags.
  */
-void ft_print_formatted_number(char *str, int str_len, int padding, t_printf_state *state)
+void ft_print_formatted_conversion(char *str, int str_len, int padding, t_printf_state *state)
 {
     char padding_char;
 
