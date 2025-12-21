@@ -35,6 +35,7 @@ void ft_handle_string_conversion(va_list arg, const char *format, t_printf_state
 void ft_handle_pointer_conversion(va_list arg, const char *format, t_printf_state *state);
 void ft_handle_signed_integer_conversion(va_list arg, const char *format, t_printf_state *state);
 void ft_handle_unsigned_integer_conversion(va_list arg, const char *format, t_printf_state *state);
+void ft_handle_hex_conversion(va_list arg, const char *format, t_printf_state *state);
 
 char *ft_ull_to_hex(unsigned long long num, t_printf_state *state);
 char *ft_apply_precision_to_number(char *num_str, int precision, int is_negative);

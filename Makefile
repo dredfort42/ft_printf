@@ -25,14 +25,15 @@ LIBFT_A     := $(LIBFT_DIR)/libft.a
 
 # ft_printf source files
 SRCS        := ft_printf.c \
-			   ft_parsing.c \
-			   ft_handle_percent_conversion.c \
-			   ft_handle_char_conversion.c \
-			   ft_handle_string_conversion.c \
-			   ft_handle_pointer_conversion.c \
-			   ft_handle_signed_integer_conversion.c \
+               ft_parsing.c \
+               ft_handle_percent_conversion.c \
+               ft_handle_char_conversion.c \
+               ft_handle_string_conversion.c \
+               ft_handle_pointer_conversion.c \
+               ft_handle_signed_integer_conversion.c \
                ft_handle_unsigned_integer_conversion.c \
-			   ft_process_utils.c
+               ft_handle_hex_conversion.c \
+               ft_process_utils.c
 # 			   \
 # 			   ft_handle_char.c \
 # 			   ft_handle_string.c \

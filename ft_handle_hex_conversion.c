@@ -49,8 +49,8 @@
  */
 void ft_handle_hex_conversion(va_list arg, const char *format, t_printf_state *state)
 {
-    char *str;
-
     if (format[state->format_pos] != 'x' && format[state->format_pos] != 'X')
         return;
+
+    (void)arg; // To avoid unused parameter warning if needed
 }
