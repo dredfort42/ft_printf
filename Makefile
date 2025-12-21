@@ -34,16 +34,6 @@ SRCS        := ft_printf.c \
                ft_handle_unsigned_integer_conversion.c \
                ft_handle_hex_conversion.c \
                ft_process_utils.c
-# 			   \
-# 			   ft_handle_char.c \
-# 			   ft_handle_string.c \
-# 			   ft_handle_percent.c \
-# 			   ft_handle_integer.c \
-# 			   ft_handle_unsigned.c \
-# 			   ft_handle_hex.c \
-# 			   ft_handle_pointer.c \
-# 			   ft_utils.c \
-# 			   ft_utils_2.c
 
 # libft source files
 LIBFT_SRCS  := $(LIBFT_DIR)/ft_atoi.c \
