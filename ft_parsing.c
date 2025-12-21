@@ -51,7 +51,11 @@ static void ft_parse_field_width(va_list arg, const char *format, t_printf_state
 		state->format_pos++;
 	}
 	else if (format[state->format_pos] >= '0' && format[state->format_pos] <= '9')
+	{
 		state->field_width = ft_atoi(&format[state->format_pos]);
+		while (format[state->format_pos] >= '0' && format[state->format_pos] <= '9')
+			state->format_pos++;
+	}
 }
 
 /**
@@ -78,6 +82,8 @@ static void ft_parse_precision(va_list arg, const char *format, t_printf_state *
 		else
 		{
 			state->precision = ft_atoi(&format[state->format_pos]);
+			while (format[state->format_pos] >= '0' && format[state->format_pos] <= '9')
+				state->format_pos++;
 			if (state->precision < 0)
 				state->precision = -1;
 		}
@@ -100,14 +106,6 @@ static void ft_handle_conversions(va_list arg, const char *format, t_printf_stat
 	ft_handle_signed_integer_conversion(arg, format, state);
 	ft_handle_unsigned_integer_conversion(arg, format, state);
 	ft_handle_hex_conversion(arg, format, state);
-
-	// ft_conversion_diu(arg, format, data);
-	// ft_conversion_x(arg, format, data);
-	// ft_conversion_X(arg, format, data);
-	// ft_conversion_n(arg, format, data);
-	// ft_conversion_f(arg, format, data);
-	// ft_conversion_e(arg, format, data);
-	// ft_conversion_g(arg, format, data);
 }
 
 /**
@@ -140,8 +138,8 @@ void ft_parsing(va_list arg, const char *format, t_printf_state *state)
 			if (format[state->format_pos] == 'h')
 				state->format_pos++;
 		}
-		state->format_pos++;
+		else if (!ft_strchr(conversions, format[state->format_pos]))
+			state->format_pos++;
 	}
-
 	ft_handle_conversions(arg, format, state);
 }

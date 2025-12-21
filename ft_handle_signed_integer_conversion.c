@@ -14,10 +14,7 @@ static char *ft_process_signed_integer(int num, t_printf_state *state)
 
     result = ft_itoa(num);
     if (!result)
-    {
-        state->has_error = TRUE;
         return (NULL);
-    }
     if (num >= 0)
     {
         temp = NULL;
@@ -102,14 +99,11 @@ void ft_handle_signed_integer_conversion(va_list arg, const char *format, t_prin
     num = va_arg(arg, int);
     str = ft_process_signed_integer(num, state);
     if (!str)
-        return;
+        return ((void)(state->has_error = TRUE));
     precision_str = ft_apply_precision(str, state->precision, num < 0);
     free(str);
     if (!precision_str)
-    {
-        state->has_error = TRUE;
-        return;
-    }
+        return ((void)(state->has_error = TRUE));
     str_len = (int)ft_strlen(precision_str);
     if (state->field_width > str_len)
         padding = state->field_width - str_len;

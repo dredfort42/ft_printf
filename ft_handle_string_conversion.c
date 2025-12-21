@@ -21,10 +21,7 @@ static char *ft_process_string(char *str, t_printf_state *state)
 	max_len = ft_strlen(str);
 	result = (char *)malloc(sizeof(char) * (max_len + 1));
 	if (!result)
-	{
-		state->has_error = TRUE;
 		return (NULL);
-	}
 	i = 0;
 	if (state->precision > -1 && max_len > state->precision)
 		max_len = state->precision;
@@ -82,7 +79,7 @@ void ft_handle_string_conversion(va_list arg, const char *format, t_printf_state
 		return;
 	str = ft_process_string(va_arg(arg, char *), state);
 	if (!str)
-		return;
+		return ((void)(state->has_error = TRUE));
 	str_len = (int)ft_strlen(str);
 	spaces_count = 0;
 	if (state->field_width > str_len)

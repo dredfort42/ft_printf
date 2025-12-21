@@ -3,17 +3,16 @@
 /**
  * @brief Processes the unsigned integer according to flags and returns its string representation.
  *
- * @param n   The unsigned integer to be processed.
- * @param state Pointer to t_printf_state structure holding parsing state and flags.
+ * @param num   The unsigned integer to be processed.
  * @return A newly allocated string representing the unsigned integer with applied flags.
  */
-static char *ft_process_unsigned_integer(unsigned int n, t_printf_state *state)
+static char *ft_process_unsigned_integer(unsigned int num)
 {
     char *result;
     unsigned int tmp;
     size_t digits;
 
-    tmp = n;
+    tmp = num;
     digits = 1;
     while (tmp >= 10)
     {
@@ -22,12 +21,9 @@ static char *ft_process_unsigned_integer(unsigned int n, t_printf_state *state)
     }
     result = (char *)malloc(sizeof(char) * (digits + 1));
     if (!result)
-    {
-        state->has_error = TRUE;
         return (NULL);
-    }
     result[digits] = '\0';
-    tmp = n;
+    tmp = num;
     while (digits--)
     {
         result[digits] = (char)('0' + (tmp % 10));
@@ -86,16 +82,13 @@ void ft_handle_unsigned_integer_conversion(va_list arg, const char *format, t_pr
     if (format[state->format_pos] != 'u')
         return;
     num = va_arg(arg, unsigned int);
-    str = ft_process_unsigned_integer(num, state);
+    str = ft_process_unsigned_integer(num);
     if (!str)
-        return;
+        return ((void)(state->has_error = TRUE));
     precision_str = ft_apply_precision(str, state->precision, 0);
     free(str);
     if (!precision_str)
-    {
-        state->has_error = TRUE;
-        return;
-    }
+        return ((void)(state->has_error = TRUE));
     str_len = ft_strlen(precision_str);
     if (state->field_width > str_len)
         padding = state->field_width - str_len;

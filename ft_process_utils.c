@@ -23,11 +23,10 @@ static short ft_count_hex_digits(unsigned long long num)
  * @brief Converts an unsigned long long number to its hexadecimal string representation.
  *
  * @param num   The number to be converted.
- * @param state Pointer to t_printf_state structure holding parsing state and flags.
  * @param is_uppercase Flag indicating if the hexadecimal letters should be uppercase.
  * @return A newly allocated string representing the hexadecimal value of the number.
  */
-char *ft_ull_to_hex(unsigned long long num, t_printf_state *state, int is_uppercase)
+char *ft_ull_to_hex(unsigned long long num, int is_uppercase)
 {
     const char *hex_chars;
     short digits_count;
@@ -41,10 +40,7 @@ char *ft_ull_to_hex(unsigned long long num, t_printf_state *state, int is_upperc
     digits_count = ft_count_hex_digits(num);
     result = (char *)malloc(sizeof(char) * (digits_count + 1));
     if (!result)
-    {
-        state->has_error = TRUE;
-        return NULL;
-    }
+        return (NULL);
     result[digits_count] = '\0';
     i = digits_count - 1;
     if (num == 0)
@@ -116,6 +112,7 @@ static void ft_print_padding(int count, char pad_char, t_printf_state *state)
 void ft_print_formatted_conversion(char *str, int str_len, int padding, t_printf_state *state)
 {
     char padding_char;
+    int has_sign;
 
     if (state->flag_zero && !state->flag_minus && state->precision < 0)
         padding_char = '0';
@@ -125,10 +122,14 @@ void ft_print_formatted_conversion(char *str, int str_len, int padding, t_printf
         ft_print_padding(padding, ' ', state);
     if (padding_char == '0' && !state->flag_minus)
     {
-        if (str[0] == '+' || str[0] == '-' || str[0] == ' ')
+        has_sign = (str[0] == '+' || str[0] == '-' || str[0] == ' ');
+        if (has_sign)
             state->printed_chars += write(1, str, 1);
         ft_print_padding(padding, '0', state);
-        state->printed_chars += write(1, str + 1, str_len - 1);
+        if (has_sign)
+            state->printed_chars += write(1, str + 1, str_len - 1);
+        else
+            state->printed_chars += write(1, str, str_len);
     }
     else
         state->printed_chars += write(1, str, str_len);

@@ -20,8 +20,6 @@ char *ft_apply_prefix(char *hex_str, t_printf_state *state, int is_uppercase)
     else
         prefix = "0x";
     result = ft_strjoin(prefix, hex_str);
-    if (!result)
-        state->has_error = TRUE;
     free(hex_str);
     return result;
 }
@@ -73,6 +71,7 @@ char *ft_apply_prefix(char *hex_str, t_printf_state *state, int is_uppercase)
  *
  *   - printf("%#X", 0);         // Output: '0' (no prefix for zero)
  */
+
 void ft_handle_hex_conversion(va_list arg, const char *format, t_printf_state *state)
 {
     char *str;
@@ -82,19 +81,16 @@ void ft_handle_hex_conversion(va_list arg, const char *format, t_printf_state *s
 
     if (format[state->format_pos] != 'x' && format[state->format_pos] != 'X')
         return;
-    str = ft_ull_to_hex(va_arg(arg, unsigned long long), state, format[state->format_pos] == 'X');
+    str = ft_ull_to_hex(va_arg(arg, unsigned int), format[state->format_pos] == 'X');
     if (!str)
-        return;
+        return ((void)(state->has_error = TRUE));
     precision_str = ft_apply_precision(str, state->precision, 0);
     free(str);
     if (!precision_str)
-    {
-        state->has_error = TRUE;
-        return;
-    }
+        return ((void)(state->has_error = TRUE));
     prefix_str = ft_apply_prefix(precision_str, state, format[state->format_pos] == 'X');
     if (!prefix_str)
-        return;
+        return ((void)(state->has_error = TRUE));
     padding = 0;
     if (state->field_width > (long)ft_strlen(prefix_str))
         padding = state->field_width - (long)ft_strlen(prefix_str);
